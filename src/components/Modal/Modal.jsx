@@ -4,11 +4,9 @@ import css from "./Modal.module.css";
 
 const Modal = ({ url, onClose }) => {
   return (
-    <Modal onRequestClose={onClose}>
-      <a className={css.modal} onClick={onClose}>
-        <img src={url} />
-      </a>
-    </Modal>
+    <a className={css.modal} onClick={onClose}>
+      <img src={url} />
+    </a>
   );
 };
 

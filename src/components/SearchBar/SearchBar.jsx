@@ -8,7 +8,7 @@ const Header = ({ onSearch }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (e.target.elements.searchBar.value.trim() == "") {
-      toast.error("This didn't work.");
+      toast.error("Enter something in search bar!");
       return;
     }
     onSearch(e.target.elements.searchBar.value);
