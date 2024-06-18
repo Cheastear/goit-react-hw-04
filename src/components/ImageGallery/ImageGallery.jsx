@@ -9,9 +9,7 @@ const ImageGallery = ({ images, onClick }) => {
       {images.map((elem) => {
         return (
           <li className={css.item} key={elem.id}>
-            <a onClick={() => onClick(elem.urls.regular)}>
-              <ImageCard elem={elem} />
-            </a>
+            <ImageCard elem={elem} onClick={onClick} />
           </li>
         );
       })}

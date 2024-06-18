@@ -15,29 +15,38 @@ function App() {
   const [gallery, setGallery] = useState([]);
   const [filter, setFilter] = useState("");
   const [modal, setModal] = useState("");
+  const [page, setPage] = useState(1);
 
-  const fetchImages = async (filter, append = false) => {
+  const fetchImages = async (filter, page) => {
     setIsSearching(true);
     setIsError(false);
     setLoadMore(false);
 
+    console.log(page);
+
     try {
       const response = await axios.get(
-        `https://api.unsplash.com/photos/random`,
+        `https://api.unsplash.com/search/photos`,
         {
           params: {
             query: filter,
             client_id: "Z2VtDNiPzyg5YK8n6paZQDRC99TSBDd-5IPi_NfkIw8",
-            count: 12,
+            per_page: 12,
+            page: page,
             orientation: "landscape",
           },
         }
       );
 
       setGallery((prevGallery) =>
-        append ? [...prevGallery, ...response.data] : response.data
+        page != 1
+          ? [...prevGallery, ...response.data.results]
+          : response.data.results
       );
-      setLoadMore(true);
+
+      if (response.data.results.length == 12) {
+        setLoadMore(true);
+      }
     } catch (error) {
       setGallery([]);
       setIsError(true);
@@ -48,16 +57,17 @@ function App() {
 
   useEffect(() => {
     if (filter) {
-      fetchImages(filter);
+      fetchImages(filter, page);
     }
-  }, [filter]);
+  }, [filter, page]);
 
   const handleSubmit = (filter) => {
     setFilter(filter);
+    setPage(1);
   };
 
   const handleLoadMore = () => {
-    fetchImages(filter, true);
+    setPage(page + 1);
   };
 
   const handleModal = (urlImg) => {
