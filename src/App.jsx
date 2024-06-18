@@ -22,8 +22,6 @@ function App() {
     setIsError(false);
     setLoadMore(false);
 
-    console.log(page);
-
     try {
       const response = await axios.get(
         `https://api.unsplash.com/search/photos`,
