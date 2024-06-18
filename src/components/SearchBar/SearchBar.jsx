@@ -2,7 +2,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 import PropTypes from "prop-types";
 import css from "./SearchBar.module.css";
-import CustomButton from "../CustomButton/CustomButton";
+import CustomButton from "../LoadMoreBtn/LoadMoreBtn";
 
 const Header = ({ onSearch }) => {
   const handleSubmit = (e) => {

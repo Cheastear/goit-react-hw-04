@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-import Image from "./Image/Image";
+import ImageCard from "./ImageCard/ImageCard";
 import css from "./ImageGallery.module.css";
 
 const ImageGallery = ({ images, onClick }) => {
@@ -10,7 +10,7 @@ const ImageGallery = ({ images, onClick }) => {
         return (
           <li className={css.item} key={elem.id}>
             <a onClick={() => onClick(elem.urls.regular)}>
-              <Image elem={elem} />
+              <ImageCard elem={elem} />
             </a>
           </li>
         );

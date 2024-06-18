@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import css from "./CustomButton.module.css";
+import css from "./LoadMoreBtn.module.css";
 
-const CustomButton = ({ children, onClick = () => {} }) => {
+const LoadMoreBtn = ({ children, onClick = () => {} }) => {
   return (
     <button onClick={onClick} className={css.button}>
       {children}
@@ -9,9 +9,9 @@ const CustomButton = ({ children, onClick = () => {} }) => {
   );
 };
 
-CustomButton.propTypes = {
+LoadMoreBtn.propTypes = {
   children: PropTypes.string,
   onClick: PropTypes.func,
 };
 
-export default CustomButton;
+export default LoadMoreBtn;

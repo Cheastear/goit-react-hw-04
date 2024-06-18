@@ -1,14 +1,12 @@
-//
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { Rings } from "react-loader-spinner";
 
 import ImageGallery from "./components/ImageGallery/ImageGallery";
 import SearchBar from "./components/SearchBar/SearchBar";
-import CustomButton from "./components/CustomButton/CustomButton";
+import LoadMoreBtn from "./components/LoadMoreBtn/LoadMoreBtn";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
-import Modal from "./components/Modal/Modal";
+import ImageModal from "./components/ImageModal/ImageModal";
 
 function App() {
   const [isSearching, setIsSearching] = useState(false);
@@ -18,27 +16,27 @@ function App() {
   const [filter, setFilter] = useState("");
   const [modal, setModal] = useState("");
 
-  const handleSubmit = async (filter) => {
+  const fetchImages = async (filter, append = false) => {
     setIsSearching(true);
     setIsError(false);
     setLoadMore(false);
 
-    setFilter(filter);
-
     try {
-      await axios
-        .get(`https://api.unsplash.com/photos/random`, {
+      const response = await axios.get(
+        `https://api.unsplash.com/photos/random`,
+        {
           params: {
             query: filter,
             client_id: "Z2VtDNiPzyg5YK8n6paZQDRC99TSBDd-5IPi_NfkIw8",
             count: 12,
             orientation: "landscape",
           },
-        })
-        .then((response) => {
-          setGallery(response.data);
-        });
+        }
+      );
 
+      setGallery((prevGallery) =>
+        append ? [...prevGallery, ...response.data] : response.data
+      );
       setLoadMore(true);
     } catch (error) {
       setGallery([]);
@@ -48,32 +46,18 @@ function App() {
     }
   };
 
-  const handleLoadMore = async () => {
-    setIsSearching(true);
-    setIsError(false);
-    setLoadMore(false);
-
-    try {
-      await axios
-        .get(`https://api.unsplash.com/photos/random`, {
-          params: {
-            query: filter,
-            client_id: "Z2VtDNiPzyg5YK8n6paZQDRC99TSBDd-5IPi_NfkIw8",
-            count: 12,
-            orientation: "landscape",
-          },
-        })
-        .then((response) => {
-          setGallery([...gallery, ...response.data]);
-        });
-
-      setLoadMore(true);
-    } catch (error) {
-      setGallery([]);
-      setIsError(true);
-    } finally {
-      setIsSearching(false);
+  useEffect(() => {
+    if (filter) {
+      fetchImages(filter);
     }
+  }, [filter]);
+
+  const handleSubmit = (filter) => {
+    setFilter(filter);
+  };
+
+  const handleLoadMore = () => {
+    fetchImages(filter, true);
   };
 
   const handleModal = (urlImg) => {
@@ -107,10 +91,10 @@ function App() {
         </ErrorMessage>
       )}
 
-      {modal != "" && <Modal url={modal} onClose={onCloseModal} />}
+      {modal && <ImageModal url={modal} onClose={onCloseModal} />}
 
       {loadMore && (
-        <CustomButton onClick={handleLoadMore}>LoadMore</CustomButton>
+        <LoadMoreBtn onClick={handleLoadMore}>Load More</LoadMoreBtn>
       )}
     </>
   );

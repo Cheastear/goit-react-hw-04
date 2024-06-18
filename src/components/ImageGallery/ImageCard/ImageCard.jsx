@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const Image = ({ elem }) => {
+const ImageCard = ({ elem }) => {
   return (
     <>
       <img src={elem.urls.small} alt={elem.slug} />
@@ -8,8 +8,8 @@ const Image = ({ elem }) => {
   );
 };
 
-Image.propTypes = {
+ImageCard.propTypes = {
   elem: PropTypes.object,
 };
 
-export default Image;
+export default ImageCard;
